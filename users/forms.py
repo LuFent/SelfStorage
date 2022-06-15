@@ -7,7 +7,15 @@ from .models import User
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ("email",)
+        fields = ('email', 'password1', 'password2')
+    
+    def clean_email(self):
+        email = self.cleaned_data['email'].lower()
+        try:
+            User.objects.get(email=email)
+        except Exception:
+            return email
+        raise forms.ValidationError(f'E-mail {email} уже существует.')
 
 
 class CustomUserChangeForm(UserChangeForm):

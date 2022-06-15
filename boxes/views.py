@@ -1,10 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from users.forms import LoginForm
+from users.forms import LoginForm, CustomUserCreationForm
 
 def index(request):
-    context = {'login_form': LoginForm()}
+    context = {
+        'login_form': LoginForm(),
+        'registration_form': CustomUserCreationForm(),
+    }
     return render(request, 'index.html', context)
 
 

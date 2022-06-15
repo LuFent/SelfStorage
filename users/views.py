@@ -1,7 +1,32 @@
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-from .forms import LoginForm
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
+
+from .forms import LoginForm, CustomUserCreationForm
+
+
+def register_user(request, *args, **kwargs):
+    user = request.user
+    if user.is_authenticated:
+        return HttpResponse(f'Вы уже зарегистрированы как {user.email}')
+
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            user = authenticate(
+                request,
+                username=form.cleaned_data.get('email'),
+                password=form.cleaned_data.get('password1')
+            )
+            login(request, user)
+            destination = kwargs.get('next')
+            if destination:
+                return redirect(destination)
+            return redirect('/')
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'users/register.html', {'form': form})
 
 
 def login_user(request):

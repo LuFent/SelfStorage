@@ -1,5 +1,5 @@
 from django.contrib import admin
-from boxes.models import Storage, Box
+from boxes.models import Storage, Box, Order
 
 
 @admin.register(Box)
@@ -10,4 +10,9 @@ class OrderBox(admin.ModelAdmin):
 
 @admin.register(Storage)
 class OrderBox(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
     pass

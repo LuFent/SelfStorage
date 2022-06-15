@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
+from users.forms import LoginForm
 
 def index(request):
-    return render(request, 'index.html')
+    context = {'login_form': LoginForm()}
+    return render(request, 'index.html', context)
 
 
 def boxes(request):

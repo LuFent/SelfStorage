@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'boxes',
     'users',
     'payment.apps.PaymentConfig',
+    'keystore.apps.KeystoreConfig',
 ]
 
 MIDDLEWARE = [
@@ -143,3 +144,9 @@ STATICFILES_DIRS = (
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.User'
 LOGOUT_REDIRECT_URL = '/'
+
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_USE_TLS = True
+EMAIL_PORT = env('EMAIL_PORT')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')

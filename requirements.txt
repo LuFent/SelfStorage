@@ -1,3 +1,4 @@
 Django==4.0.4
 yookassa==2.3.1
 environs[django]==9.5.0
+Pillow==9.1.1

@@ -32,11 +32,12 @@ class Storage(models.Model):
     route = models.CharField('Проезд',
                              max_length=50)
 
+    
+
     objects = StorageQuerySet.as_manager()
 
     def __str__(self):
         return f'Склад: {self.city} {self.address}'
-
 
 
 class Box(models.Model):
@@ -56,15 +57,6 @@ class Order(models.Model):
     price = models.PositiveIntegerField('Цена заказа')
     lease_start = models.DateField('День начала аренды')
     lease_end = models.DateField('День конца аренды')
-    #customer = models.ForeignKey(Customer, verbose_name='Заказчик', on_delete=models.CASCADE)
-
-
-class Customer(models.Model):
-    user = models.ForeignKey(
-        User,
-        verbose_name='Модель Юзера',
-        on_delete=models.CASCADE,
-        related_name='customer')
 
 
 class CalcRequest(models.Model):

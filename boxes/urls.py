@@ -9,7 +9,7 @@ app_name = "boxes"
 urlpatterns = [
     path('', index),
     path('faq', lambda response: render(response, 'faq.html')), #FIXME Костыль, но забыл как правильно :)
-    path('boxes', boxes),
+    path('boxes/<int:storage_id>', boxes, name='boxes'),
     path('lk', lk),
     path('calculate', handle_calc_request, name='calc-request')
 ]

@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from .models import Storage, Box
 from users.forms import LoginForm, CustomUserCreationForm
 from boxes.forms import CalcRequestForm
+import pprint
+
 
 def index(request):
     context = {
@@ -19,7 +21,8 @@ def box_serialize(box):
             "number": box.number,
             "volume": box.volume,
             "price": box.price,
-            "is_occupied": box.is_occupied
+            "is_occupied": box.is_occupied,
+            "dimensions": box.dimensions,
         }
 
 
@@ -34,13 +37,35 @@ def storage_serialize(storage):
             "feature": storage.feature,
             "contacts": storage.contacts,
             "description": storage.description,
-            "route": storage.route
+            "route": storage.route,
+            "preview_img": storage.imgs.first().image.url if storage.imgs.count() else None,
+            "temperature": storage.temperature,
+            "feature": storage.feature
         }
 
 
 def boxes(request, storage_id):
     selected_storage = Storage.objects.get(id=storage_id)
+
     storage_boxes = [box_serialize(box) for box in selected_storage.boxes.all()]
+    pprint.pprint(storage_boxes)
+    boxes_to_3 = []
+    boxes_to_10 = []
+    boxes_from_10 = []
+    for box in storage_boxes:
+        if int(box['volume']) < 3:
+            boxes_to_3.append(box)
+        elif int(box['volume']) < 10:
+            boxes_to_10.append(box)
+        else:
+            boxes_from_10.append(box)
+
+    boxes_all = boxes_to_3 + boxes_to_10 + boxes_from_10
+
+    boxes_items = {'to_3': boxes_to_3,
+                   'to_10': boxes_to_10,
+                   'from_10': boxes_from_10,
+                   'boxes_all': boxes_all}
 
     storages = Storage.objects.fetch_with_min_price()
     storages = storages.fetch_with_boxes_available_count()
@@ -51,9 +76,12 @@ def boxes(request, storage_id):
         storage_items.append(serialized_storage)
         if storage.id == storage_id:
             selected_storage_item = serialized_storage
+            selected_storage_item['images'] = [image.image.url for image in storage.imgs.all() if image.image.url != serialized_storage['preview_img']]
+            selected_storage_item['ceiling_height'] = selected_storage.ceiling_height
 
-    cotext = {"storage_boxes": storage_boxes, "storages": storage_items, "selected_storage": selected_storage_item}
-    return render(request, 'boxes.html', cotext)
+    context = {"storage_boxes": boxes_items, "storages": storage_items, "selected_storage": selected_storage_item}
+    pprint.pprint(context)
+    return render(request, 'boxes.html', context)
 
 
 def lk(request):

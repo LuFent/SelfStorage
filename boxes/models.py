@@ -24,7 +24,7 @@ class Storage(models.Model):
                                max_length=20,
                                help_text='У каждого бокса своя фича, например: `Рядом метро`')
 
-    contacts = models.CharField('Котнакты',
+    contacts = models.CharField('Контакты',
                                 max_length=30)
 
     description = models.CharField('Описание',
@@ -35,6 +35,8 @@ class Storage(models.Model):
 
     temperature = models.IntegerField('Температура на складе', default=15)
 
+    ceiling_height = models.FloatField('Высота потолка', default=3.5)
+
     objects = StorageQuerySet.as_manager()
 
     class Meta:
@@ -42,8 +44,6 @@ class Storage(models.Model):
 
     def __str__(self):
         return f'Склад: {self.city} {self.address}'
-
-
 
 
 class StorageImage(models.Model):
@@ -68,11 +68,24 @@ class StorageImage(models.Model):
 
 class Box(models.Model):
     floor = models.PositiveIntegerField('Этаж')
+
     number = models.CharField('Номер бокса', max_length=7)
+
     volume = models.PositiveIntegerField('Объем бокса м^2')
-    storage = models.ForeignKey(Storage, verbose_name='Склад', related_name='boxes', on_delete=models.CASCADE)
+
+    storage = models.ForeignKey(Storage, verbose_name='Склад',
+                                related_name='boxes',
+                                on_delete=models.CASCADE)
+
     price = models.PositiveIntegerField('Цена', default=0)
-    is_occupied = models.BooleanField('Занят или нет', null=False, default=False)
+
+    is_occupied = models.BooleanField('Занят или нет',
+                                      null=False,
+                                      default=False)
+
+    dimensions = models.CharField('Параметры бокса',
+                                  max_length= 20,
+                                  default='2 x 1 x 2.5')
 
     def __str__(self):
         return f'Бокс  {self.number} {self.storage}'

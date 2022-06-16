@@ -9,11 +9,13 @@
     <div class="col-12 col-lg-6 mb-3 mb-lg-0">
       <h1 class="fw-bold SelfStorage_green mb-5">Доставка и бережное хранение ваших вещей</h1>
       <h4 class="fw-lighter SelfStorage_grey mb-5">Аренда бокса на любой срок. Бесплатная доставка от вашего дома.</h4>
-      <form>
-        <input type="text" required name="EMAIL1"
+      <form action="{% url 'boxes:calc-request' %}" method="post">
+        {% csrf_token %}
+        {{ calc_request_form }}
+        <!-- <input type="text" required name="EMAIL1"
           class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey"
-          placeholder="Укажите ваш e-mail">
-        <button class="btn border-8 py-3 px-5 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">
+          placeholder="Укажите ваш e-mail"> -->
+        <button type="submit" class="btn border-8 py-3 px-5 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">
           Рассчитать стоимость</button>
         <span class="text-center fw-light">
           Нажимая на кнопку, вы подтверждаете свое <a href="#" class="link-dark">согласие на обработку персональных
@@ -254,16 +256,19 @@
         скидку 15% до конца апреля</h1>
       <h4 class="text-white text-center fw-light">Акция распространяется только на новых пользователей сервиса
         SelfStorage</h4>
-      <form class="row my-4">
+      <form action="{% url 'boxes:calc-request' %}" method="post" class="row my-4">
+        {% csrf_token %}
         <div class="col-12 col-lg-6">
-          <input type="text" required name="EMAIL2"
+          {{ calc_request_form }}
+          <!-- <input type="text" required name="EMAIL2"
             class="form-control border-8 mb-4 me-3 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey"
-            placeholder="Укажите ваш e-mail">
+            placeholder="Укажите ваш e-mail"> -->
         </div>
         <div class="col-12 col-lg-6">
-          <button
-            class="btn w-100 border-8 py-3 px-5 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">Рассчитать
-            стоимость</button>
+          <button type="submit"
+            class="btn w-100 border-8 py-3 px-5 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">
+            Рассчитать стоимость
+          </button>
         </div>
       </form>
       <span class="text-white text-center fw-light">Нажимая на кнопку, вы подтверждаете свое <a href="#"

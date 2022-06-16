@@ -11,5 +11,6 @@ urlpatterns = [
     path('faq', lambda response: render(response, 'faq.html')), #FIXME Костыль, но забыл как правильно :)
     path('boxes', boxes),
     path('lk', lk),
+    path('calculate', handle_calc_request, name='calc-request')
 ]
 

@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from users.models import User
 
 
@@ -65,7 +66,29 @@ class Customer(models.Model):
         on_delete=models.CASCADE,
         related_name='customer')
 
-    # Территория Ромы
+
+class CalcRequest(models.Model):
+    REQUEST_STATUS_CHOICES = (
+        ('NEW', 'новый'),
+        ('PRC', 'обработан'),
+    )
+    email = models.EmailField('Email', max_length=100, db_index=True)
+    created_at = models.DateTimeField('Дата создания', default=timezone.now, db_index=True)
+    status = models.CharField(
+        'Cтатус',
+        max_length=3,
+        choices=REQUEST_STATUS_CHOICES,
+        default='NEW',
+        db_index=True,
+    )
+
+    class Meta:
+        verbose_name = 'запрос на рассчет'
+        verbose_name_plural = 'запросы на рассчет'
+
+    def __str__(self):
+        return self.email
+
 
 
 

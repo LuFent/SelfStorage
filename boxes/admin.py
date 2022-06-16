@@ -1,16 +1,24 @@
 from django.contrib import admin
-from boxes.models import Storage, Box, Order, CalcRequest
+from boxes.models import Storage, Box, Order, CalcRequest, StorageImage
+from adminsortable2.admin import SortableInlineAdminMixin, SortableAdminMixin
+
+
+class ImagesInline(SortableInlineAdminMixin, admin.TabularInline):
+    model = StorageImage
+    extra = 1
+    fields = ('image', 'preview', 'number')
+    readonly_fields = ('preview',)
 
 
 @admin.register(Box)
-class OrderBox(admin.ModelAdmin):
+class BoxAdmin(admin.ModelAdmin):
     class Meta:
         verbose_name_plural = "Boxes"
 
 
 @admin.register(Storage)
-class OrderBox(admin.ModelAdmin):
-    pass
+class StorageAdmin(SortableAdminMixin, admin.ModelAdmin):
+    inlines = [ImagesInline]
 
 
 @admin.register(Order)
@@ -31,3 +39,6 @@ class CalcRequestAdmin(admin.ModelAdmin):
         "created_at",
         "status",
     )
+
+
+admin.site.register(StorageImage)

@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from users.models import User
+from django.utils.html import format_html
 
 
 class StorageQuerySet(models.QuerySet):
@@ -32,12 +33,37 @@ class Storage(models.Model):
     route = models.CharField('Проезд',
                              max_length=50)
 
-    
+    temperature = models.IntegerField('Температура на складе', default=15)
 
     objects = StorageQuerySet.as_manager()
 
+    class Meta:
+        ordering = ['id']
+
     def __str__(self):
         return f'Склад: {self.city} {self.address}'
+
+
+
+
+class StorageImage(models.Model):
+    image = models.ImageField('Изображение склада', default=None)
+    storage = models.ForeignKey(Storage,
+                              on_delete=models.CASCADE,
+                              verbose_name='К какому складу относится',
+                              related_name='imgs')
+
+    number = models.IntegerField('Номер картинки', default=0)
+
+    class Meta(object):
+        ordering = ['number']
+
+    def preview(self):
+        full_url = str(self.image.url)
+        return format_html('<img src="{}", width=200, height=200>', full_url)
+
+    def __str__(self):
+        return f'{self.number}  img of  {self.storage}'
 
 
 class Box(models.Model):

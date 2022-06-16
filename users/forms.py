@@ -46,18 +46,13 @@ class CustomUserChangeForm(UserChangeForm):
 
 
 class LoginForm(forms.Form):
-    classes = (
-        'form-control border-8 mb-4 py-3 px-5 border-0 fs_24 '
-        'SelfStorage__bg_lightgrey'
-    )
-
     email = forms.CharField(
         widget=forms.EmailInput(
-            attrs={'class': classes, 'placeholder': 'E-mail'}
+            attrs={'class': FORM_FIELD_STYLES, 'placeholder': 'E-mail'}
         )
     )
     password = forms.CharField(
         widget=forms.PasswordInput(
-            attrs={'class': classes, 'placeholder': 'Пароль'}
+            attrs={'class': FORM_FIELD_STYLES, 'placeholder': 'Пароль'}
         )
     )

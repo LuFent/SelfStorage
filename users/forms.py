@@ -4,7 +4,28 @@ from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from .models import User
 
 
+FORM_FIELD_STYLES = (
+    'form-control border-8 mb-4 py-3 px-5 border-0 fs_24 '
+    'SelfStorage__bg_lightgrey'
+)
+
+
 class CustomUserCreationForm(UserCreationForm):
+    email = forms.CharField(
+        widget=forms.EmailInput(
+            attrs={'class': FORM_FIELD_STYLES, 'placeholder': 'E-mail'}
+        )
+    )
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={'class': FORM_FIELD_STYLES, 'placeholder': 'Пароль'}
+        )
+    )
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={'class': FORM_FIELD_STYLES, 'placeholder': 'Пароль'}
+        )
+    )
     class Meta:
         model = User
         fields = ('email', 'password1', 'password2')
@@ -25,5 +46,13 @@ class CustomUserChangeForm(UserChangeForm):
 
 
 class LoginForm(forms.Form):
-    email = forms.CharField(widget=forms.EmailInput)
-    password = forms.CharField(widget=forms.PasswordInput)
+    email = forms.CharField(
+        widget=forms.EmailInput(
+            attrs={'class': FORM_FIELD_STYLES, 'placeholder': 'E-mail'}
+        )
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={'class': FORM_FIELD_STYLES, 'placeholder': 'Пароль'}
+        )
+    )

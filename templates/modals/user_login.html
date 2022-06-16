@@ -9,9 +9,8 @@
                     style="max-width: 420px">
                     {% csrf_token %}
                     <h1 class="modal-title text-center fw-bold mb-3">Вход</h1>
-                    {{ login_form }}
-                    <!-- <input type="email" required name="EMAIL" class="form-control  border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey" placeholder="E-mail"> -->
-                    <!-- <input type="password" required name="PASSWORD" class="form-control  border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey" placeholder="Пароль"> -->
+                    {{ login_form.email }}
+                    {{ login_form.password }}
                     <a href="#" class="SelfStorage_orange" data-bs-toggle="modal" data-bs-target="#ForgetModal"
                         data-bs-dismiss="modal" aria-label="Close">Забыли пароль?</a>
                     <button

@@ -8,7 +8,7 @@ def index(request):
         'login_form': LoginForm(),
         'registration_form': CustomUserCreationForm(),
     }
-    return render(request, 'index.html', context)
+    return render(request, 'main.html', context)
 
 
 def boxes(request):

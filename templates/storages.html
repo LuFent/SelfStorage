@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Аренда боксов{% endblock %}
+
+{% block content %}
+<main class="container mt-header">
+  {% include "calc_request/big_form.html" %}
+  <article class="mt-header">
+    <h1 class="text-center fw-bold SelfStorage_green mb-5">Аренда боксов</h1>
+    <h6 class="text-center SelfStorage_grey">Арендуйте склад индивидуального хранения по уникальной цене прямо сейчас
+    </h6>
+    <a href="#BOX" id="toBox" class="d-none"></a>
+    <ul class="nav nav-pills mb-3 d-flex justify-content-between" id="boxes-links" role="tablist">
+      
+      {% for storage in storages %}
+      <li class="nav-item flex-grow-1 mx-2" role="presentation">
+        <a href="{% url 'boxes:boxes' storage.id %}" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink" id="pills-{{ storage.id }}-tab" data-bs-toggle="pill" data-bs-target="#pills-{{ storage.id }}" role="tab" aria-controls="pills-{{ storage.id }}" aria-selected="true">
+          <div class="col-12 col-lg-3 d-flex justify-content-center">
+            <img src="{{ storage.preview_img }}" width="175" height="125" alt="" class="mb-3 mb-lg-0">
+          </div>
+          <div class="col-12 col-md-4 col-lg-3 d-flex flex-column justify-content-center">
+            <h4 class="text-center">{{ storage.city }}</h4>
+            <h6 class="text-center">{{ storage.address }}</h6>
+          </div>
+          <div class="col-12 col-md-4 col-lg-3 d-flex flex-column justify-content-center">
+            <h4 class="text-center">{{ storage.boxes_available }} из {{ storage.max_box_count }}</h4>
+            <h6 class="text-center">{{ storage.boxes_available }}</h6>
+          </div>
+          <div class="col-12 col-md-4 col-lg-3 d-flex flex-column justify-content-center">
+            <h4 class="text-center SelfStorage_green">от {{ storage.min_price }} ₽</h4>
+            <h6 class="text-center">{{ storage.feature }}</h6>
+          </div>
+        </a>
+      </li>
+      {% endfor %}
+
+    </ul>
+
+    <script>
+
+      {% for storage in storages %}
+      document.getElementById('pills-{{ storage.id }}-tab').addEventListener('click', function redirectFunction() {
+        var url = "{% url 'boxes:boxes' storage.id %}";
+        console.log(url);
+          location.assign(url);
+       })
+
+      {% endfor %}
+    </script>
+  </article>
+
+  
+
+
+
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script>
+  var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+  var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+    return new bootstrap.Popover(popoverTriggerEl)
+  })
+</script>
+{% endblock %}

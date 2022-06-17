@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Storage, Box
@@ -48,7 +49,11 @@ def storage_serialize(storage):
 
 
 def boxes(request, storage_id):
-    selected_storage = Storage.objects.get(id=storage_id)
+    
+    try:
+    	selected_storage = Storage.objects.get(id=storage_id)
+    except Storage.DoesNotExist:
+    	return redirect('boxes:storages')
 
     storage_boxes = [box_serialize(box) for box in selected_storage.boxes.all()]
     boxes_to_3 = []
@@ -81,10 +86,32 @@ def boxes(request, storage_id):
             selected_storage_item['images'] = [image.image.url for image in storage.imgs.all() if image.image.url != serialized_storage['preview_img']]
             selected_storage_item['ceiling_height'] = selected_storage.ceiling_height
 
-    context = {"storage_boxes": boxes_items, "storages": storage_items, "selected_storage": selected_storage_item}
+    context = {
+        "storage_boxes": boxes_items,
+        "storages": storage_items,
+        "selected_storage": selected_storage_item,
+        'login_form': LoginForm(),
+        'registration_form': CustomUserCreationForm(),
+        'calc_request_form': CalcRequestForm(),
+    }
     return render(request, 'boxes.html', context)
+    
+    
+def storages(request):
+    storages = Storage.objects.fetch_with_min_price()
+    storages = storages.fetch_with_boxes_available_count()
+    storage_items = [storage_serialize(storage) for storage in storages]
+
+    context = {
+        "storages": storage_items,
+        "login_form": LoginForm(),
+        "registration_form": CustomUserCreationForm(),
+        "calc_request_form": CalcRequestForm(),
+    }
+    return render(request, 'storages.html', context)
 
 
+@login_required(login_url='users:login')
 def lk(request):
     return render(request, 'my-rent.html')
 

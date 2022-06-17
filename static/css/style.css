@@ -90,6 +90,13 @@ body {
     border-radius: 8px;
     border: solid 2px white;
 }
+.SelfStorage__boxlink__deactivated {
+    border-radius: 8px;
+    border: solid 2px red;
+    pointer-events: none !important;
+    cursor: default;
+    color:Gray;
+}
 .SelfStorage__boxlink:hover {
     border: solid 2px #579586;
 }
@@ -135,6 +142,9 @@ body {
  }
 .SelfStorage_orange {
     color: #F28A4F !important;
+}
+.SelfStorage_red {
+    color: #DC143C !important;
 }
 .SelfStorage__bg_orange {
     background-color: #F28A4F !important;

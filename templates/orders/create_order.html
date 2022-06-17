@@ -1,0 +1,24 @@
+<article class="row">
+  <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+    <h1 class="fw-bold SelfStorage_green mb-5">Вы хотите заказать бокс {{ box.number }} на складе {{ box.storage }} </h1>
+    <h4 class="fw-lighter SelfStorage_grey mb-5">Цена аренды на месяц {{ box.price }} рублей.</h4>
+<form action="/orderbox/{{ box.id }}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+</form>
+
+<h4 class="fw-lighter SelfStorage_grey mb-5" id="price"></h4>
+
+<script type="text/javascript">
+  var inp = document.getElementById('id_term'), block = document.getElementById('price');
+
+inp.addEventListener('input', function() {
+
+  var price = this.value * {{ box.price }};
+  block.innerHTML = "Цена : " + price.toString() + " рублей"
+
+});
+
+
+</script>

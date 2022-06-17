@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Storage, Box
 from users.forms import LoginForm, CustomUserCreationForm
-from boxes.forms import CalcRequestForm
+from boxes.forms import CalcRequestForm, OrderForm
 import pprint
+
 
 
 def index(request):
@@ -23,6 +24,8 @@ def box_serialize(box):
             "price": box.price,
             "is_occupied": box.is_occupied,
             "dimensions": box.dimensions,
+            "is_occupied": box.is_occupied,
+            "id": box.id
         }
 
 
@@ -48,7 +51,6 @@ def boxes(request, storage_id):
     selected_storage = Storage.objects.get(id=storage_id)
 
     storage_boxes = [box_serialize(box) for box in selected_storage.boxes.all()]
-    pprint.pprint(storage_boxes)
     boxes_to_3 = []
     boxes_to_10 = []
     boxes_from_10 = []
@@ -80,7 +82,6 @@ def boxes(request, storage_id):
             selected_storage_item['ceiling_height'] = selected_storage.ceiling_height
 
     context = {"storage_boxes": boxes_items, "storages": storage_items, "selected_storage": selected_storage_item}
-    pprint.pprint(context)
     return render(request, 'boxes.html', context)
 
 
@@ -97,6 +98,33 @@ def handle_calc_request(request):
     else:
         form = CalcRequestForm()
     return render(request, 'users/register.html', {'form': form})
+
+
+def order_box(request, box_id):
+
+    selected_box = Box.objects.get(id=box_id)
+    if selected_box.is_occupied:
+        return HttpResponse('Коробка уже занята')
+
+    box_item = {
+        'number': selected_box.number,
+        'price': selected_box.price,
+        'storage': selected_box.storage,
+        'id': selected_box.id
+    }
+
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            # ПРИКРУТИТЬ ОПЛАТУ
+            # form.cleaned_data
+            # {'lease_start': datetime.date(2022, 6, 16), 'term': 1}
+            pass
+
+    else:
+        form = OrderForm()
+
+    return render(request, 'orders/create_order.html', {'form': form, 'box': box_item})
 
 
 

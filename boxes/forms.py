@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import CalcRequest
+from .models import CalcRequest, Order
 
 
 class CalcRequestForm(forms.ModelForm):
@@ -18,3 +18,14 @@ class CalcRequestForm(forms.ModelForm):
                 }
             )
         }
+
+
+class OrderForm(forms.ModelForm):
+    term = forms.IntegerField(label="Срок аренды")
+    class Meta:
+        model = Order
+        fields = ('lease_start',)
+
+
+
+

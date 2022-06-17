@@ -94,7 +94,7 @@ def handle_calc_request(request):
         form = CalcRequestForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponse('Менеджер ответит вам в течение часа.')
+            return render(request, 'calc_request/success.html', {})
     else:
         form = CalcRequestForm()
     return render(request, 'users/register.html', {'form': form})

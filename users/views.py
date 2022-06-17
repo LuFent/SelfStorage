@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login
+from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
@@ -40,9 +41,9 @@ def login_user(request):
                     login(request, user)
                     return redirect('/')
                 else:
-                    return HttpResponse('Disabled account')
+                    form.add_error(None, ValidationError('Этот аккаунт отключен'))
             else:
-                return HttpResponse('Invalid login')
+                form.add_error(None, ValidationError('Неверный email или пароль.'))
     else:
         form = LoginForm()
     return render(request, 'users/login.html', {'form': form})

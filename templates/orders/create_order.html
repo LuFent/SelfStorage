@@ -1,11 +1,22 @@
-<article class="row">
-  <div class="col-12 col-lg-6 mb-3 mb-lg-0">
-    <h1 class="fw-bold SelfStorage_green mb-5">Вы хотите заказать бокс {{ box.number }} на складе {{ box.storage }} </h1>
-    <h4 class="fw-lighter SelfStorage_grey mb-5">Цена аренды на месяц {{ box.price }} рублей.</h4>
-<form action="/orderbox/{{ box.id }}" method="post">
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<main class="container mt-header">
+  <article class="row">
+    <div class="col-12 col-lg-6 offset-lg-3 mb-3 mb-lg-0">
+      <h1 class="fw-bold SelfStorage_green mb-5">Заказ бокса</h1>
+      <h4 class="fw-lighter SelfStorage_green mb-5">Бокс {{ box.number }}. {{ box.storage }}</h4>
+      <h4 class="fw-lighter SelfStorage_grey mb-5">Цена аренды на месяц {{ box.price }} рублей</h4>
+
+      <form action="/orderbox/{{ box.id }}" method="post">
     {% csrf_token %}
+          <table class="table text-left text-truncate mb-5">
     {{ form }}
-    <input type="submit" value="Submit">
+          </table>
+    <input type="submit" value="Заказать" class="btn border-8 py-3 px-5 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">
 </form>
 
 <h4 class="fw-lighter SelfStorage_grey mb-5" id="price"></h4>
@@ -16,9 +27,21 @@
 inp.addEventListener('input', function() {
 
   var price = this.value * {{ box.price }};
-  block.innerHTML = "Цена : " + price.toString() + " рублей"
+  block.innerHTML = "Итог : " + price.toString() + " рублей"
 
 });
 
 
 </script>
+
+    </div>
+    <!-- <div class="col-12 col-lg-6 SelfStorage__img"></div> -->
+  </article>
+<main>
+{% endblock %}
+
+
+
+
+
+

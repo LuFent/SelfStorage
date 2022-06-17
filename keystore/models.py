@@ -1,4 +1,5 @@
 from django.db import models
+
 from boxes.models import Order
 
 
@@ -9,4 +10,4 @@ class BoxKey(models.Model):
         related_name="order",
         on_delete=models.CASCADE,
     )
-    code = models.IntegerField('Код')
+    code = models.IntegerField("Код")

@@ -3,12 +3,14 @@ from urllib.parse import urljoin
 
 from django.conf import settings
 from django.http import HttpResponse
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
-from yookassa import Configuration, Payment as youkassa_payment
+from yookassa import Configuration
+from yookassa import Payment as youkassa_payment
 from yookassa.domain.exceptions.unauthorized_error import UnauthorizedError
 
 from boxes.models import Order
+
 from .models import Payment
 
 
@@ -70,4 +72,4 @@ def complete_payment(request, order_id):
     order_payment.status = payment.status
     order_payment.is_paid = payment.paid
     order_payment.save()
-    #return redirect(reverse('lk')) TODO тут будет редирект на личный кабинет
+    # return redirect(reverse('lk')) TODO тут будет редирект на личный кабинет

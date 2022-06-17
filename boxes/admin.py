@@ -1,13 +1,14 @@
+from adminsortable2.admin import SortableAdminMixin, SortableInlineAdminMixin
 from django.contrib import admin
-from boxes.models import Storage, Box, Order, CalcRequest, StorageImage
-from adminsortable2.admin import SortableInlineAdminMixin, SortableAdminMixin
+
+from boxes.models import Box, CalcRequest, Order, Storage, StorageImage
 
 
 class ImagesInline(SortableInlineAdminMixin, admin.TabularInline):
     model = StorageImage
     extra = 1
-    fields = ('image', 'preview', 'number')
-    readonly_fields = ('preview',)
+    fields = ("image", "preview", "number")
+    readonly_fields = ("preview",)
 
 
 @admin.register(Box)

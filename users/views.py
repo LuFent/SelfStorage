@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
@@ -47,3 +48,10 @@ def login_user(request):
     else:
         form = LoginForm()
     return render(request, "users/login.html", {"form": form})
+
+
+@login_required(login_url="users:login")
+def account(request):
+    user = request.user
+    context = {"user": user}
+    return render(request, "account.html", context)

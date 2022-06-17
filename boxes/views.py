@@ -1,6 +1,5 @@
 import pprint
 
-from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
@@ -117,11 +116,6 @@ def storages(request):
         "calc_request_form": CalcRequestForm(),
     }
     return render(request, "storages.html", context)
-
-
-@login_required(login_url="users:login")
-def lk(request):
-    return render(request, "my-rent.html")
 
 
 def handle_calc_request(request):

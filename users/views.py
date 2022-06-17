@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
-from .forms import CustomUserCreationForm, LoginForm
+from .forms import AccountForm, CustomUserCreationForm, LoginForm
 
 
 def register_user(request, *args, **kwargs):
@@ -53,5 +53,17 @@ def login_user(request):
 @login_required(login_url="users:login")
 def account(request):
     user = request.user
-    context = {"user": user}
+
+    if request.method == "POST":
+        form = AccountForm(request.POST)
+        if form.is_valid():
+            user.email = form.cleaned_data["email"]
+            user.phonenumber = form.cleaned_data["phonenumber"]
+            user.phonenumber = form.cleaned_data["phonenumber"]
+            user.set_password(form.cleaned_data["password"])
+            user.save()
+    else:
+        form = AccountForm()
+
+    context = {"user": user, "form": form}
     return render(request, "account.html", context)

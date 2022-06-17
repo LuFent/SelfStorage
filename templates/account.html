@@ -26,40 +26,40 @@
               <h4>{{ user.first_name }} {{ user.last_name }}</h4>
             </div>
             <div class="col-12 col-sm-7 d-flex flex-column">
-              <form>
+              <form action="{% url 'users:account' %}" method="post">
+                {% csrf_token %}
                 <label class="fs_24 SelfStorage_green ms-2" for="EMAIL">E-mail</label>
-                <input type="email" name="EMAIL_EDIT" id="EMAIL" class="form-control fs_24 ps-2 SelfStorage__input"
-                  value="{{ user.email }}" disabled>
+                {{ form.email.errors }}
+                {{ form.email }}
                 <label class="fs_24 SelfStorage_green ms-2" for="PHONE">Телефон</label>
-                <input type="tel" name="PHONE_EDIT" id="PHONE" class="form-control fs_24 ps-2 SelfStorage__input"
-                  value="{{ user.phonenumber }}" disabled>
+                {{ form.phonenumber.errors }}
+                {{ form.phonenumber }}
                 <label class="fs_24 SelfStorage_green ms-2" for="PASSWORD">Пароль</label>
-                <input type="password" name="PASSWORD_EDIT" id="PASSWORD"
-                  class="form-control fs_24 ps-2 SelfStorage__input" value="password" disabled>
+                {{ form.password.errors }}
+                {{ form.password }}
                 <button type="submit" class="btn SelfStorage_green ps-1" id="save"
                   style="display: none">Сохранить</button>
                 <a class="btn SelfStorage_orange ps-1" id="edit">Редактировать</a>
                 <script>
-                  document.getElementById('edit').addEventListener('click', e => {
+                  const email_field = document.getElementById('id_email')
+                  const phone_field = document.getElementById('id_phonenumber')
+                  const password_field = document.getElementById('id_password')
+                  const edit_link = document.getElementById('edit')
+                  const save_button = document.getElementById('save')
+
+                  email_field.value = '{{ user.email }}'
+                  phone_field.value = '{{ user.phonenumber }}'
+                  password_field.value = 'password'
+
+                  edit_link.addEventListener('click', e => {
                     e.preventDefault()
-                    document.getElementById('EMAIL').disabled = false
-                    document.getElementById('PHONE').disabled = false
-                    document.getElementById('PASSWORD').disabled = false
-                    document.getElementById('PASSWORD').type = 'text'
-                    document.getElementById('PASSWORD').value = ''
-                    document.getElementById('edit').style.display = 'none'
-                    document.getElementById('save').style.display = 'inline-block'
-                  })
-                  document.getElementById('save').addEventListener('click', () => {
-                    setTimeout(() => {
-                      document.getElementById('EMAIL').disabled = true
-                      document.getElementById('PHONE').disabled = true
-                      document.getElementById('PASSWORD').disabled = true
-                      document.getElementById('PASSWORD').type = 'password'
-                      document.getElementById('PASSWORD').value = 'password'
-                      document.getElementById('edit').style.display = 'inline-block'
-                      document.getElementById('save').style.display = 'none'
-                    }, 0)
+                    email_field.disabled = false
+                    phone_field.disabled = false
+                    password_field.disabled = false
+                    password_field.type = 'text'
+                    password_field.value = ''
+                    edit_link.style.display = 'none'
+                    save_button.style.display = 'inline-block'
                   })
                 </script>
               </form>

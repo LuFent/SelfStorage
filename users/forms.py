@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+from phonenumber_field.formfields import PhoneNumberField
 
 from .models import User
 
@@ -7,6 +8,7 @@ from .models import User
 FORM_FIELD_STYLES = (
     "form-control border-8 mb-4 py-3 px-5 border-0 fs_24 " "SelfStorage__bg_lightgrey"
 )
+ACCOUNT_FORM_FIELD_STYLES = "form-control fs_24 ps-2 SelfStorage__input"
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -54,5 +56,23 @@ class LoginForm(forms.Form):
     password = forms.CharField(
         widget=forms.PasswordInput(
             attrs={"class": FORM_FIELD_STYLES, "placeholder": "Пароль"}
+        )
+    )
+
+
+class AccountForm(forms.Form):
+    email = forms.CharField(
+        widget=forms.EmailInput(
+            attrs={"class": ACCOUNT_FORM_FIELD_STYLES, "disabled": True}
+        )
+    )
+    phonenumber = PhoneNumberField(
+        widget=forms.TextInput(
+            attrs={"class": ACCOUNT_FORM_FIELD_STYLES, "disabled": True}
+        )
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={"class": ACCOUNT_FORM_FIELD_STYLES, "disabled": True}
         )
     )

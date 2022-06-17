@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<main class="container mt-header">
+  <article class="row">
+    <div class="col-12 col-lg-6 offset-lg-3 mb-3 mb-lg-0">
+      <h1 class="fw-bold SelfStorage_green mb-5">Рассчет стоимости бокса</h1>
+      <h4 class="fw-lighter SelfStorage_grey mb-5">Менеджер свяжется с вами и ответит на все вопросы.</h4>
+      <form action="{% url 'boxes:calc-request' %}" method="post">
+        {% csrf_token %}
+        {{ calc_request_form.email }}
+        <button type="submit" class="btn border-8 py-3 px-5 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">
+          Рассчитать стоимость</button>
+        <span class="text-center fw-light">
+          Нажимая на кнопку, вы подтверждаете свое <a href="#" class="link-dark">согласие на обработку персональных
+            данных</a>
+        </span>
+      </form>
+    </div>
+    <!-- <div class="col-12 col-lg-6 SelfStorage__img"></div> -->
+  </article>
+<main>
+{% endblock %}

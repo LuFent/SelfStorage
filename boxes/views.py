@@ -97,7 +97,7 @@ def handle_calc_request(request):
             return render(request, 'calc_request/success.html', {})
     else:
         form = CalcRequestForm()
-    return render(request, 'users/register.html', {'form': form})
+    return render(request, 'calc_request/form_page.html', {'calc_request_form': form})
 
 
 def order_box(request, box_id):

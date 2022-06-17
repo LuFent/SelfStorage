@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Storage, Box
@@ -110,6 +111,7 @@ def storages(request):
     return render(request, 'storages.html', context)
 
 
+@login_required(login_url='users:login')
 def lk(request):
     return render(request, 'my-rent.html')
 

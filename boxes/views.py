@@ -85,7 +85,13 @@ def boxes(request, storage_id):
             selected_storage_item['images'] = [image.image.url for image in storage.imgs.all() if image.image.url != serialized_storage['preview_img']]
             selected_storage_item['ceiling_height'] = selected_storage.ceiling_height
 
-    context = {"storage_boxes": boxes_items, "storages": storage_items, "selected_storage": selected_storage_item}
+    form = CalcRequestForm()
+    context = {
+        "storage_boxes": boxes_items,
+        "storages": storage_items,
+        "selected_storage": selected_storage_item,
+        "calc_request_form": form
+    }
     return render(request, 'boxes.html', context)
     
     
@@ -93,9 +99,9 @@ def storages(request):
     storages = Storage.objects.fetch_with_min_price()
     storages = storages.fetch_with_boxes_available_count()
     storage_items = [storage_serialize(storage) for storage in storages]
-    return render(request, 'storages.html', {"storages": storage_items})   
-    
-
+    form = CalcRequestForm()
+    context = {"storages": storage_items, "calc_request_form": form}
+    return render(request, 'storages.html', context)
 
 
 def lk(request):

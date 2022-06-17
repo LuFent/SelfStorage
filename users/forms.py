@@ -17,6 +17,38 @@ class CustomUserCreationForm(UserCreationForm):
             attrs={"class": FORM_FIELD_STYLES, "placeholder": "E-mail"}
         )
     )
+    first_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={"class": FORM_FIELD_STYLES, "placeholder": "Имя", "required": False}
+        )
+    )
+    last_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class": FORM_FIELD_STYLES,
+                "placeholder": "Фамилия",
+                "required": False,
+            }
+        )
+    )
+    phonenumber = PhoneNumberField(
+        widget=forms.TextInput(
+            attrs={
+                "class": FORM_FIELD_STYLES,
+                "placeholder": "Телефон",
+                "required": False,
+            }
+        )
+    )
+    avatar = forms.FileField(
+        widget=forms.FileInput(
+            attrs={
+                "class": FORM_FIELD_STYLES,
+                "placeholder": "Аватарка",
+                "required": False,
+            }
+        )
+    )
     password1 = forms.CharField(
         widget=forms.PasswordInput(
             attrs={"class": FORM_FIELD_STYLES, "placeholder": "Пароль"}
@@ -24,13 +56,21 @@ class CustomUserCreationForm(UserCreationForm):
     )
     password2 = forms.CharField(
         widget=forms.PasswordInput(
-            attrs={"class": FORM_FIELD_STYLES, "placeholder": "Пароль"}
+            attrs={"class": FORM_FIELD_STYLES, "placeholder": "Подтверждение пароля"}
         )
     )
 
     class Meta:
         model = User
-        fields = ("email", "password1", "password2")
+        fields = (
+            "email",
+            "first_name",
+            "last_name",
+            "phonenumber",
+            "avatar",
+            "password1",
+            "password2",
+        )
 
     def clean_email(self):
         email = self.cleaned_data["email"].lower()

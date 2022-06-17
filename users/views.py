@@ -13,7 +13,7 @@ def register_user(request, *args, **kwargs):
         return HttpResponse(f"Вы уже зарегистрированы как {user.email}")
 
     if request.method == "POST":
-        form = CustomUserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             user = authenticate(

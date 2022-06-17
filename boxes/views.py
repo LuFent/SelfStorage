@@ -48,7 +48,11 @@ def storage_serialize(storage):
 
 
 def boxes(request, storage_id):
-    selected_storage = Storage.objects.get(id=storage_id)
+    
+    try:
+    	selected_storage = Storage.objects.get(id=storage_id)
+    except Storage.DoesNotExist:
+    	return redirect('boxes:storages')
 
     storage_boxes = [box_serialize(box) for box in selected_storage.boxes.all()]
     boxes_to_3 = []
@@ -83,6 +87,15 @@ def boxes(request, storage_id):
 
     context = {"storage_boxes": boxes_items, "storages": storage_items, "selected_storage": selected_storage_item}
     return render(request, 'boxes.html', context)
+    
+    
+def storages(request):
+    storages = Storage.objects.fetch_with_min_price()
+    storages = storages.fetch_with_boxes_available_count()
+    storage_items = [storage_serialize(storage) for storage in storages]
+    return render(request, 'storages.html', {"storages": storage_items})   
+    
+
 
 
 def lk(request):

@@ -96,6 +96,12 @@ class Order(models.Model):
     price = models.PositiveIntegerField('Цена заказа')
     lease_start = models.DateField('День начала аренды')
     lease_end = models.DateField('День конца аренды')
+    customer = models.ForeignKey(
+        User,
+        verbose_name='Заказчик',
+        related_name='orders',
+        on_delete=models.CASCADE,
+    )
 
 
 class CalcRequest(models.Model):

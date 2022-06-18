@@ -70,4 +70,4 @@ def complete_payment(request, order_id):
     order_payment.status = payment.status
     order_payment.is_paid = payment.paid
     order_payment.save()
-    #return redirect(reverse('lk')) TODO тут будет редирект на личный кабинет
+    return redirect(reverse('boxes:lk'))

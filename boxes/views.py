@@ -1,3 +1,4 @@
+from datetime import timedelta
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
@@ -143,15 +144,20 @@ def order_box(request, box_id):
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
-            # ПРИКРУТИТЬ ОПЛАТУ
-            # form.cleaned_data
-            # {'lease_start': datetime.date(2022, 6, 16), 'term': 1}
-            pass
+            order = form.save(commit=False)
+            term = form.cleaned_data['term']
+            order.customer = request.user
+            order.box = selected_box
+            order.price = order.box.price * term
+            order.lease_end = order.lease_start + timedelta(days=term)
+            order.save()
+
+
 
     else:
         form = OrderForm()
 
-    return render(request, 'orders/create_order.html', {'form': form, 'box': box_item})
+    return render(request, 'orders/create_order.html', {'form': form, 'box': box_item, 'order': order})
 
 
 

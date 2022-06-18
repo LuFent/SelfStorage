@@ -1,4 +1,5 @@
 import pprint
+from datetime import timedelta
 
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
@@ -130,7 +131,6 @@ def handle_calc_request(request):
 
 
 def order_box(request, box_id):
-
     selected_box = Box.objects.get(id=box_id)
     if selected_box.is_occupied:
         return HttpResponse("Коробка уже занята")
@@ -153,9 +153,8 @@ def order_box(request, box_id):
             order.lease_end = order.lease_start + timedelta(days=term)
             order.save()
 
-
+            return render(request, 'orders/create_order.html', {'form': form, 'box': box_item, 'order': order})
 
     else:
         form = OrderForm()
-
-    return render(request, 'orders/create_order.html', {'form': form, 'box': box_item, 'order': order})
+        return render(request, 'orders/create_order.html', {'form': form, 'box': box_item, 'order': None})

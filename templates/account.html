@@ -22,7 +22,16 @@
         <div class="tab-pane fade show active" id="LK" role="tabpanel" aria-labelledby="LK-tab">
           <div class="row">
             <div class="col-12 col-sm-5 d-flex flex-column align-items-center">
+              {% if user.avatar %}
               <img src="{{ user.avatar.url }}" class="rounded-pill mb-3" style="width: 180px" alt="">
+              {% else %}
+              <div class="rounded-pill mb-3 d-flex justify-content-center align-items-center"
+                style="width: 180px; height:180px; background-color: lightgray">
+                <span class="text-white text-uppercase fw-bold display-2">
+                  {{ user.first_name|first }}{{user.last_name|first }}
+                </span>
+              </div>
+              {% endif%}
               <h4>{{ user.first_name }} {{ user.last_name }}</h4>
             </div>
             <div class="col-12 col-sm-7 d-flex flex-column">
@@ -48,7 +57,11 @@
                   const save_button = document.getElementById('save')
 
                   email_field.value = '{{ user.email }}'
+                  {% if user.phonenumber %}
                   phone_field.value = '{{ user.phonenumber }}'
+                  {% else %}
+                  phone_field.value = 'Не указан'
+                  {% endif %}
                   password_field.value = 'password'
 
                   edit_link.addEventListener('click', e => {

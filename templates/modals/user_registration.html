@@ -5,12 +5,25 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body d-flex justify-content-center align-items-center">
-                <form action="{% url 'users:register' %}" method="post" class="d-flex flex-column align-items-center" style="max-width: 420px">
+                <form action="{% url 'users:register' %}" method="post" enctype="multipart/form-data"
+                    class="d-flex flex-column align-items-center" style="max-width: 420px">
                     <h1 class="modal-title text-center fw-bold mb-3">Регистрация</h1>
                     {% csrf_token %}
+                    {{ registration_form.non_field_errors }}
+                    {{ registration_form.email.errors }}
                     {{ registration_form.email }}
+                    {{ registration_form.password1.errors }}
                     {{ registration_form.password1 }}
+                    {{ registration_form.password2.errors }}
                     {{ registration_form.password2 }}
+                    {{ registration_form.first_name.errors }}
+                    {{ registration_form.first_name }}
+                    {{ registration_form.last_name.errors }}
+                    {{ registration_form.last_name }}
+                    {{ registration_form.phonenumber.errors }}
+                    {{ registration_form.phonenumber }}
+                    {{ registration_form.avatar.errors }}
+                    {{ registration_form.avatar }}
                     <span class="fw-light SelfStorage_grey">Нажимая на кнопку, вы подтверждаете свое <a href="#"
                             class="SelfStorage_grey">согласие на обработку персональных данных</a></span>
                     <button

@@ -3,12 +3,14 @@ from urllib.parse import urljoin
 
 from django.conf import settings
 from django.http import HttpResponse
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
-from yookassa import Configuration, Payment as youkassa_payment
+from yookassa import Configuration
+from yookassa import Payment as youkassa_payment
 from yookassa.domain.exceptions.unauthorized_error import UnauthorizedError
 
 from boxes.models import Order
+
 from .models import Payment
 
 

@@ -22,41 +22,71 @@
         <div class="tab-pane fade show active" id="LK" role="tabpanel" aria-labelledby="LK-tab">
           <div class="row">
             <div class="col-12 col-sm-5 d-flex flex-column align-items-center">
-              <img src="{% static 'img/image10.png' %}" class="rounded-pill mb-3" alt="">
-              <h4>Екатерина Иванова</h4>
+              {% if user.avatar %}
+              <img src="{{ user.avatar.url }}" class="rounded-pill mb-3" style="width: 180px" alt="">
+              {% else %}
+              <div class="rounded-pill mb-3 d-flex justify-content-center align-items-center"
+                style="width: 180px; height:180px; background-color: lightgray">
+                <span class="text-white text-uppercase fw-bold display-2">
+                  {{ user.first_name|first }}{{user.last_name|first }}
+                </span>
+              </div>
+              {% endif%}
+              <h4>{{ user.first_name }} {{ user.last_name }}</h4>
             </div>
             <div class="col-12 col-sm-7 d-flex flex-column">
-              <form>
+              <form action="{% url 'users:account' %}" method="post">
+                {% csrf_token %}
                 <label class="fs_24 SelfStorage_green ms-2" for="EMAIL">E-mail</label>
-                <input type="email" name="EMAIL_EDIT" id="EMAIL" class="form-control fs_24 ps-2 SelfStorage__input"
-                  value="ekatyusha89@yandex.ru" disabled>
+                {{ form.email.errors }}
+                {{ form.email }}
                 <label class="fs_24 SelfStorage_green ms-2" for="PHONE">Телефон</label>
-                <input type="tel" name="PHONE_EDIT" id="PHONE" class="form-control fs_24 ps-2 SelfStorage__input"
-                  value="+7-909-000-00-00" disabled>
+                {{ form.phonenumber.errors }}
+                {{ form.phonenumber }}
                 <label class="fs_24 SelfStorage_green ms-2" for="PASSWORD">Пароль</label>
-                <input type="password" name="PASSWORD_EDIT" id="PASSWORD"
-                  class="form-control fs_24 ps-2 SelfStorage__input" value="111111111" disabled>
+                {{ form.password.errors }}
+                {{ form.password }}
                 <button type="submit" class="btn SelfStorage_green ps-1" id="save"
                   style="display: none">Сохранить</button>
+                <a class="btn SelfStorage_orange ps-1" style="display: none" id="cancel">Отмена</a>
                 <a class="btn SelfStorage_orange ps-1" id="edit">Редактировать</a>
                 <script>
-                  document.getElementById('edit').addEventListener('click', e => {
+                  const email_field = document.getElementById('id_email')
+                  const phone_field = document.getElementById('id_phonenumber')
+                  const password_field = document.getElementById('id_password')
+                  const edit_link = document.getElementById('edit')
+                  const save_button = document.getElementById('save')
+                  const cancel_link = document.getElementById('cancel')
+
+                  email_field.value = '{{ user.email }}'
+                  {% if user.phonenumber %}
+                  phone_field.value = '{{ user.phonenumber }}'
+                  {% else %}
+                  phone_field.value = 'Не указан'
+                  {% endif %}
+                  password_field.value = 'password'
+
+                  edit_link.addEventListener('click', e => {
                     e.preventDefault()
-                    document.getElementById('EMAIL').disabled = false
-                    document.getElementById('PHONE').disabled = false
-                    document.getElementById('PASSWORD').disabled = false
-                    document.getElementById('PASSWORD').type = 'text'
-                    document.getElementById('edit').style.display = 'none'
-                    document.getElementById('save').style.display = 'inline-block'
+                    email_field.disabled = false
+                    phone_field.disabled = false
+                    password_field.disabled = false
+                    password_field.type = 'text'
+                    password_field.value = ''
+                    edit_link.style.display = 'none'
+                    save_button.style.display = 'inline-block'
+                    cancel_link.style.display = 'inline-block'
                   })
-                  document.getElementById('save').addEventListener('click', () => {
+                  cancel_link.addEventListener('click', () => {
                     setTimeout(() => {
-                      document.getElementById('EMAIL').disabled = true
-                      document.getElementById('PHONE').disabled = true
-                      document.getElementById('PASSWORD').disabled = true
-                      document.getElementById('PASSWORD').type = 'password'
-                      document.getElementById('edit').style.display = 'inline-block'
-                      document.getElementById('save').style.display = 'none'
+                      email_field.disabled = true
+                      phone_field.disabled = true
+                      password_field.disabled = true
+                      password_field.type = 'password'
+                      password_field.value = 'password'
+                      edit_link.style.display = 'inline-block'
+                      save_button.style.display = 'none'
+                      cancel_link.style.display = 'none'
                     }, 0)
                   })
                 </script>
@@ -65,7 +95,7 @@
           </div>
         </div>
         <div class="tab-pane fade" id="Rent" role="tabpanel" aria-labelledby="Rent-tab">
-          <h1 class="fw-bold SelfStorage_green mb-5">Добрый день, Екатерина!</h1>
+          <h1 class="fw-bold SelfStorage_green mb-5">Добрый день, {{ user.first_name }}!</h1>
           <a href="#" class="SelfStorage_orange">История аренды</a>
           <h4 class="SelfStorage_grey my-3">Срок Вашей аренды подходит к концу :(<br>Вы можете продлить аренду или
             забрать вещи до 28 июня 2022 года включительно.</h4>

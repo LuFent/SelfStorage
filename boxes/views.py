@@ -1,79 +1,81 @@
-from datetime import timedelta
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from .models import Storage, Box
-from users.forms import LoginForm, CustomUserCreationForm
-from boxes.forms import CalcRequestForm, OrderForm
 import pprint
 
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
+
+from boxes.forms import CalcRequestForm, OrderForm
+from users.forms import CustomUserCreationForm, LoginForm
+
+from .models import Box, Storage
 
 
 def index(request):
     context = {
-        'login_form': LoginForm(),
-        'registration_form': CustomUserCreationForm(),
-        'calc_request_form': CalcRequestForm(),
+        "login_form": LoginForm(),
+        "registration_form": CustomUserCreationForm(),
+        "calc_request_form": CalcRequestForm(),
     }
-    return render(request, 'main.html', context)
+    return render(request, "main.html", context)
 
 
 def box_serialize(box):
     return {
-            "floor": box.floor,
-            "number": box.number,
-            "volume": box.volume,
-            "price": box.price,
-            "is_occupied": box.is_occupied,
-            "dimensions": box.dimensions,
-            "is_occupied": box.is_occupied,
-            "id": box.id
-        }
+        "floor": box.floor,
+        "number": box.number,
+        "volume": box.volume,
+        "price": box.price,
+        "is_occupied": box.is_occupied,
+        "dimensions": box.dimensions,
+        "is_occupied": box.is_occupied,
+        "id": box.id,
+    }
 
 
 def storage_serialize(storage):
     return {
-            "id": storage.id,
-            "city": storage.city,
-            "address": storage.address,
-            "max_box_count": storage.max_box_count,
-            "boxes_available": storage.boxes_available,
-            "min_price": storage.min_price,
-            "feature": storage.feature,
-            "contacts": storage.contacts,
-            "description": storage.description,
-            "route": storage.route,
-            "preview_img": storage.imgs.first().image.url if storage.imgs.count() else None,
-            "temperature": storage.temperature,
-            "feature": storage.feature
-        }
+        "id": storage.id,
+        "city": storage.city,
+        "address": storage.address,
+        "max_box_count": storage.max_box_count,
+        "boxes_available": storage.boxes_available,
+        "min_price": storage.min_price,
+        "feature": storage.feature,
+        "contacts": storage.contacts,
+        "description": storage.description,
+        "route": storage.route,
+        "preview_img": storage.imgs.first().image.url if storage.imgs.count() else None,
+        "temperature": storage.temperature,
+        "feature": storage.feature,
+    }
 
 
 def boxes(request, storage_id):
-    
+
     try:
-    	selected_storage = Storage.objects.get(id=storage_id)
+        selected_storage = Storage.objects.get(id=storage_id)
     except Storage.DoesNotExist:
-    	return redirect('boxes:storages')
+        return redirect("boxes:storages")
 
     storage_boxes = [box_serialize(box) for box in selected_storage.boxes.all()]
     boxes_to_3 = []
     boxes_to_10 = []
     boxes_from_10 = []
     for box in storage_boxes:
-        if int(box['volume']) < 3:
+        if int(box["volume"]) < 3:
             boxes_to_3.append(box)
-        elif int(box['volume']) < 10:
+        elif int(box["volume"]) < 10:
             boxes_to_10.append(box)
         else:
             boxes_from_10.append(box)
 
     boxes_all = boxes_to_3 + boxes_to_10 + boxes_from_10
 
-    boxes_items = {'to_3': boxes_to_3,
-                   'to_10': boxes_to_10,
-                   'from_10': boxes_from_10,
-                   'boxes_all': boxes_all}
+    boxes_items = {
+        "to_3": boxes_to_3,
+        "to_10": boxes_to_10,
+        "from_10": boxes_from_10,
+        "boxes_all": boxes_all,
+    }
 
     storages = Storage.objects.fetch_with_min_price()
     storages = storages.fetch_with_boxes_available_count()
@@ -84,20 +86,24 @@ def boxes(request, storage_id):
         storage_items.append(serialized_storage)
         if storage.id == storage_id:
             selected_storage_item = serialized_storage
-            selected_storage_item['images'] = [image.image.url for image in storage.imgs.all() if image.image.url != serialized_storage['preview_img']]
-            selected_storage_item['ceiling_height'] = selected_storage.ceiling_height
+            selected_storage_item["images"] = [
+                image.image.url
+                for image in storage.imgs.all()
+                if image.image.url != serialized_storage["preview_img"]
+            ]
+            selected_storage_item["ceiling_height"] = selected_storage.ceiling_height
 
     context = {
         "storage_boxes": boxes_items,
         "storages": storage_items,
         "selected_storage": selected_storage_item,
-        'login_form': LoginForm(),
-        'registration_form': CustomUserCreationForm(),
-        'calc_request_form': CalcRequestForm(),
+        "login_form": LoginForm(),
+        "registration_form": CustomUserCreationForm(),
+        "calc_request_form": CalcRequestForm(),
     }
-    return render(request, 'boxes.html', context)
-    
-    
+    return render(request, "boxes.html", context)
+
+
 def storages(request):
     storages = Storage.objects.fetch_with_min_price()
     storages = storages.fetch_with_boxes_available_count()
@@ -109,39 +115,34 @@ def storages(request):
         "registration_form": CustomUserCreationForm(),
         "calc_request_form": CalcRequestForm(),
     }
-    return render(request, 'storages.html', context)
-
-
-@login_required(login_url='users:login')
-def lk(request):
-    return render(request, 'my-rent.html')
+    return render(request, "storages.html", context)
 
 
 def handle_calc_request(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = CalcRequestForm(request.POST)
         if form.is_valid():
             form.save()
-            return render(request, 'calc_request/success.html', {})
+            return render(request, "calc_request/success.html", {})
     else:
         form = CalcRequestForm()
-    return render(request, 'calc_request/form_page.html', {'calc_request_form': form})
+    return render(request, "calc_request/form_page.html", {"calc_request_form": form})
 
 
 def order_box(request, box_id):
 
     selected_box = Box.objects.get(id=box_id)
     if selected_box.is_occupied:
-        return HttpResponse('Коробка уже занята')
+        return HttpResponse("Коробка уже занята")
 
     box_item = {
-        'number': selected_box.number,
-        'price': selected_box.price,
-        'storage': selected_box.storage,
-        'id': selected_box.id
+        "number": selected_box.number,
+        "price": selected_box.price,
+        "storage": selected_box.storage,
+        "id": selected_box.id,
     }
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = OrderForm(request.POST)
         if form.is_valid():
             order = form.save(commit=False)
@@ -158,6 +159,3 @@ def order_box(request, box_id):
         form = OrderForm()
 
     return render(request, 'orders/create_order.html', {'form': form, 'box': box_item, 'order': order})
-
-
-

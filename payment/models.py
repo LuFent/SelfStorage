@@ -4,11 +4,7 @@ from boxes.models import Order
 
 
 class Payment(models.Model):
-    payment_id = models.SlugField(
-        "ID платежа в Юкасса",
-        max_length=100,
-        unique=True
-    )
+    payment_id = models.SlugField("ID платежа в Юкасса", max_length=100, unique=True)
     order = models.ForeignKey(
         Order,
         verbose_name="Заказ к оплате",

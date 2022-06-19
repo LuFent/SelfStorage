@@ -21,7 +21,7 @@ def payment(request, order_id):
 
     return_url = urljoin(
         request.build_absolute_uri(),
-        reverse(complete_payment, kwargs={"order_id": order_id}),
+        reverse("payment:complete_payment", kwargs={"order_id": order_id}),
     )
 
     try:

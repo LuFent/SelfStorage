@@ -14,7 +14,7 @@
       <h4 class="fw-lighter SelfStorage_grey mb-5">День начала аренды {{ order.lease_start}}</h4>
       <h4 class="fw-lighter SelfStorage_grey mb-5">Последний день аренды {{ order.lease_end}}</h4>
       <h4 class="fw-lighter SelfStorage_red mb-5">К оплате {{ order.price }} руб.</h4>
-      <a type="submit" id="btnContinue" class="btn border-8 py-3 px-5 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange" href="{% url 'payment' order.id %}">
+      <a type="submit" id="btnContinue" class="btn border-8 py-3 px-5 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange" href="{% url 'payment:payment' order.id %}">
           Оплатить</a>
     {% else %}
               <form action="/orderbox/{{ box.id }}" method="post">

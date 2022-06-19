@@ -16,7 +16,7 @@
           <table class="table text-left text-truncate mb-5">
     {{ form }}
           </table>
-    <a type="submit" id="btnContinue" class="btn border-8 py-3 px-5 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange" href="{% url 'payment' order.id %}">
+    <a type="submit" id="btnContinue" class="btn border-8 py-3 px-5 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange" href="{% url 'payment:payment' order.id %}">
                         Оплатить
                     </a>
 </form>

@@ -2,6 +2,7 @@ from adminsortable2.admin import SortableAdminMixin, SortableInlineAdminMixin
 from django.contrib import admin
 
 from boxes.models import Box, CalcRequest, Order, Storage, StorageImage
+from payment.models import Payment
 
 
 class ImagesInline(SortableInlineAdminMixin, admin.TabularInline):
@@ -22,9 +23,21 @@ class StorageAdmin(SortableAdminMixin, admin.ModelAdmin):
     inlines = [ImagesInline]
 
 
+class PaymentInline(admin.StackedInline):
+    model = Payment
+    extra = 0
+
+
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    pass
+    inlines = [PaymentInline]
+    list_display = ('id', 'box', 'lease_start', 'lease_end',
+                    'customer', 'get_payment')
+
+    @admin.display(ordering='payments__status', description='Payment')
+    def get_payment(self, obj):
+        if obj.payments.first():
+            return obj.payments.first().status
 
 
 @admin.register(CalcRequest)

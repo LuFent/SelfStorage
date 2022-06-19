@@ -1,3 +1,4 @@
+{% load static %}
 <aside class="modal fade" id="RegModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
         <div class="modal-content">
@@ -24,7 +25,8 @@
                     {{ registration_form.phonenumber }}
                     {{ registration_form.avatar.errors }}
                     {{ registration_form.avatar }}
-                    <span class="fw-light SelfStorage_grey">Нажимая на кнопку, вы подтверждаете свое <a href="#"
+                    <span class="fw-light SelfStorage_grey">Нажимая на кнопку, вы подтверждаете свое <a
+                            href="{% static 'privacy/Политика компании SelfStorage в отношении обработки персональных данных.pdf' %}"
                             class="SelfStorage_grey">согласие на обработку персональных данных</a></span>
                     <button
                         class="btn border-8 py-3 px-5 mt-5 mb-3 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">Зарегистрироваться</button>

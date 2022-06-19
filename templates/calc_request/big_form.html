@@ -1,3 +1,4 @@
+{% load static %}
 <article class="row">
   <div class="col-12 col-lg-6 mb-3 mb-lg-0">
     <h1 class="fw-bold SelfStorage_green mb-5">Доставка и бережное хранение ваших вещей</h1>
@@ -5,10 +6,13 @@
     <form action="{% url 'boxes:calc-request' %}" method="post">
       {% csrf_token %}
       {{ calc_request_form.email }}
-      <button type="submit" class="btn border-8 py-3 px-5 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">
+      <button type="submit"
+        class="btn border-8 py-3 px-5 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">
         Рассчитать стоимость</button>
       <span class="text-center fw-light">
-        Нажимая на кнопку, вы подтверждаете свое <a href="#" class="link-dark">согласие на обработку персональных
+        Нажимая на кнопку, вы подтверждаете свое
+        <a href="{% static 'privacy/Политика компании SelfStorage в отношении обработки персональных данных.pdf' %}"
+          class="link-dark">согласие на обработку персональных
           данных</a>
       </span>
     </form>

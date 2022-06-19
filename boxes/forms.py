@@ -21,7 +21,7 @@ class CalcRequestForm(forms.ModelForm):
 
 
 class OrderForm(forms.ModelForm):
-    term = forms.IntegerField(label="Срок аренды")
+    term = forms.IntegerField(label="Срок аренды, мес")
 
     class Meta:
         model = Order

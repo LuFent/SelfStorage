@@ -10,18 +10,23 @@
       <h1 class="fw-bold SelfStorage_green mb-5">Заказ бокса</h1>
       <h4 class="fw-lighter SelfStorage_green mb-5">Бокс {{ box.number }}. {{ box.storage }}</h4>
       <h4 class="fw-lighter SelfStorage_grey mb-5">Цена аренды на месяц {{ box.price }} рублей</h4>
-
-      <form action="/orderbox/{{ box.id }}" method="post">
+    {% if order%}
+      <h4 class="fw-lighter SelfStorage_grey mb-5">День начала аренды {{ order.lease_start}}</h4>
+      <h4 class="fw-lighter SelfStorage_grey mb-5">Последний день аренды {{ order.lease_end}}</h4>
+      <h4 class="fw-lighter SelfStorage_red mb-5">К оплате {{ order.price }} руб.</h4>
+      <a type="submit" id="btnContinue" class="btn border-8 py-3 px-5 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange" href="{% url 'payment' order.id %}">
+          Оплатить</a>
+    {% else %}
+              <form action="/orderbox/{{ box.id }}" method="post">
     {% csrf_token %}
           <table class="table text-left text-truncate mb-5">
     {{ form }}
           </table>
-    <a type="submit" id="btnContinue" class="btn border-8 py-3 px-5 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange" href="{% url 'payment' order.id %}">
-                        Оплатить
-                    </a>
+    <input type="submit" value="Оформить заказ" class="btn border-8 py-3 px-5 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">
 </form>
 
 <h4 class="fw-lighter SelfStorage_grey mb-5" id="price"></h4>
+    {% endif %}
 
 <script type="text/javascript">
   var inp = document.getElementById('id_term'), block = document.getElementById('price');

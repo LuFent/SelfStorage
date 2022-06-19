@@ -1,4 +1,6 @@
+from datetime import date
 from django import forms
+from django.forms.widgets import SelectDateWidget
 
 from .models import CalcRequest, Order
 
@@ -21,8 +23,13 @@ class CalcRequestForm(forms.ModelForm):
 
 
 class OrderForm(forms.ModelForm):
+    lease_start = forms.DateField(
+        label='Начальная дата',
+        widget=SelectDateWidget(),
+        initial=date.today
+    )
     term = forms.IntegerField(label="Срок аренды, мес")
 
     class Meta:
         model = Order
-        fields = ("lease_start",)
+        fields = ('id', )

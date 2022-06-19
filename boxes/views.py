@@ -151,12 +151,13 @@ def order_box(request, box_id):
         if form.is_valid():
             order = form.save(commit=False)
             term = form.cleaned_data['term']
+            lease_start = form.cleaned_data['lease_start']
             order.customer = request.user
             order.box = selected_box
             order.price = order.box.price * term
-            order.lease_end = order.lease_start + relativedelta(months=term)
+            order.lease_start = lease_start
+            order.lease_end = lease_start + relativedelta(months=term)
             order.save()
-
             return render(request, 'orders/create_order.html', {'form': form, 'box': box_item, 'order': order})
 
     else:

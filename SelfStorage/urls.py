@@ -23,6 +23,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("boxes.urls", namespace="boxes")),
     path("users/", include("users.urls", namespace="users")),
-    path("payment/", include("payment.urls")),
-    path("keystore/", include("keystore.urls")),
+    path("payment/", include("payment.urls", namespace="payment")),
+    path("keystore/", include("keystore.urls", namespace="keystore")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

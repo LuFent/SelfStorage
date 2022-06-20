@@ -61,8 +61,9 @@ def payment(request, order_id):
 
 
 def complete_payment(request, order_id):
+    order = Order.objects.get(id=order_id)
     order_payment = (
-        Order.objects.get(id=order_id).payments.order_by("-created_at").first()
+        order.payments.order_by("-created_at").first()
     )
 
     Configuration.account_id = settings.SHOP_ID
@@ -72,4 +73,5 @@ def complete_payment(request, order_id):
     order_payment.status = payment.status
     order_payment.is_paid = payment.paid
     order_payment.save()
+    order.box.is_occupied = True
     return redirect(reverse("users:account"))

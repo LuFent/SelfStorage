@@ -1,10 +1,7 @@
-import pprint
-
 from dateutil.relativedelta import relativedelta
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
-
 from boxes.forms import CalcRequestForm, OrderForm
 from users.forms import CustomUserCreationForm, LoginForm
 
@@ -58,7 +55,8 @@ def boxes(request, storage_id):
     except Storage.DoesNotExist:
         return redirect("boxes:storages")
 
-    storage_boxes = [box_serialize(box) for box in selected_storage.boxes.all()]
+    boxes = selected_storage.boxes.prefetch_related('orders').is_occupied_update()
+    storage_boxes = [box_serialize(box) for box in boxes]
     boxes_to_3 = []
     boxes_to_10 = []
     boxes_from_10 = []

@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.utils.html import format_html
-
+from datetime import date
 from users.models import User
 
 
@@ -71,6 +71,17 @@ class StorageImage(models.Model):
         return f"{self.number}  img of  {self.storage}"
 
 
+class BoxQuerySet(models.QuerySet):
+    def is_occupied_update(self):
+        for box in self:
+            if box.orders.count() and box.orders.last().lease_end > date.today() :
+                box.is_occupied = True
+            else:
+                box.is_occupied = False
+            box.save()
+        return self
+
+
 class Box(models.Model):
     floor = models.PositiveIntegerField("Этаж")
 
@@ -89,6 +100,7 @@ class Box(models.Model):
     dimensions = models.CharField(
         "Параметры бокса", max_length=20, default="2 x 1 x 2.5"
     )
+    objects = BoxQuerySet.as_manager()
 
     def __str__(self):
         return f"Бокс  {self.number} {self.storage}"

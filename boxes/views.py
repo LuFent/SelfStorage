@@ -4,12 +4,19 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from boxes.forms import CalcRequestForm, OrderForm, ProlongationForm
 from users.forms import CustomUserCreationForm, LoginForm
-
+from coords.views import get_nearest_storage
 from .models import Box, Storage, Order
 
 
 def index(request):
+    Storage.objects.fetch_with_coords()
+    nearest_storage_id = get_nearest_storage(request)
+    nearest_storage = Storage.objects.filter(id=nearest_storage_id)
+    nearest_storage = nearest_storage.fetch_with_min_price()
+    nearest_storage = nearest_storage.fetch_with_boxes_available_count()
+    nearest_storage_item = storage_serialize(nearest_storage.first())
     context = {
+        "nearest_storage": nearest_storage_item,
         "login_form": LoginForm(),
         "registration_form": CustomUserCreationForm(),
         "calc_request_form": CalcRequestForm(),
@@ -25,7 +32,6 @@ def box_serialize(box):
         "price": box.price,
         "is_occupied": box.is_occupied,
         "dimensions": box.dimensions,
-        "is_occupied": box.is_occupied,
         "id": box.id,
     }
 
@@ -44,7 +50,7 @@ def storage_serialize(storage):
         "route": storage.route,
         "preview_img": storage.imgs.first().image.url if storage.imgs.count() else None,
         "temperature": storage.temperature,
-        "feature": storage.feature,
+        "ceiling_height": storage.ceiling_height
     }
 
 
@@ -91,7 +97,7 @@ def boxes(request, storage_id):
                 for image in storage.imgs.all()
                 if image.image.url != serialized_storage["preview_img"]
             ]
-            selected_storage_item["ceiling_height"] = selected_storage.ceiling_height
+
 
     context = {
         "storage_boxes": boxes_items,

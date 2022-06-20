@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.utils.html import format_html
 from datetime import date
 from users.models import User
+from coords.fetch_coords import fetch_coordinates
 
 
 class StorageQuerySet(models.QuerySet):
@@ -15,6 +16,12 @@ class StorageQuerySet(models.QuerySet):
                 "boxes", filter=models.Q(boxes__is_occupied=False)
             )
         )
+
+    def fetch_with_coords(self):
+        for storage in self:
+            if not storage.lat or not storage.lng:
+                storage.lng, storage.lat = fetch_coordinates(storage.city + storage.address)
+            storage.save()
 
 
 class Storage(models.Model):
@@ -39,6 +46,9 @@ class Storage(models.Model):
     temperature = models.IntegerField("Температура на складе", default=15)
 
     ceiling_height = models.FloatField("Высота потолка", default=3.5)
+
+    lng = models.FloatField("Долгота", null=True, blank=True)
+    lat = models.FloatField("Широта", null=True, blank=True)
 
     objects = StorageQuerySet.as_manager()
 

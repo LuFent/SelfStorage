@@ -4,12 +4,23 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from boxes.forms import CalcRequestForm, OrderForm, ProlongationForm
 from users.forms import CustomUserCreationForm, LoginForm
-
+from coords.views import get_nearest_storage
 from .models import Box, Storage, Order
 
 
 def index(request):
+    Storage.objects.fetch_with_coords()
+    nearest_storage_id = get_nearest_storage(request)
+    if not nearest_storage_id:
+        nearest_storage_id = Storage.objects.order_by("?").first().id
+
+    nearest_storage = Storage.objects.filter(id=nearest_storage_id)
+
+    nearest_storage = nearest_storage.fetch_with_min_price()
+    nearest_storage = nearest_storage.fetch_with_boxes_available_count()
+    nearest_storage_item = storage_serialize(nearest_storage.first())
     context = {
+        "nearest_storage": nearest_storage_item,
         "login_form": LoginForm(),
         "registration_form": CustomUserCreationForm(),
         "calc_request_form": CalcRequestForm(),
@@ -25,7 +36,6 @@ def box_serialize(box):
         "price": box.price,
         "is_occupied": box.is_occupied,
         "dimensions": box.dimensions,
-        "is_occupied": box.is_occupied,
         "id": box.id,
     }
 
@@ -44,7 +54,7 @@ def storage_serialize(storage):
         "route": storage.route,
         "preview_img": storage.imgs.first().image.url if storage.imgs.count() else None,
         "temperature": storage.temperature,
-        "feature": storage.feature,
+        "ceiling_height": storage.ceiling_height,
     }
 
 
@@ -55,7 +65,7 @@ def boxes(request, storage_id):
     except Storage.DoesNotExist:
         return redirect("boxes:storages")
 
-    boxes = selected_storage.boxes.prefetch_related('orders').is_occupied_update()
+    boxes = selected_storage.boxes.prefetch_related("orders").is_occupied_update()
     storage_boxes = [box_serialize(box) for box in boxes.filter(is_occupied=False)]
     boxes_to_3 = []
     boxes_to_10 = []
@@ -91,7 +101,6 @@ def boxes(request, storage_id):
                 for image in storage.imgs.all()
                 if image.image.url != serialized_storage["preview_img"]
             ]
-            selected_storage_item["ceiling_height"] = selected_storage.ceiling_height
 
     context = {
         "storage_boxes": boxes_items,
@@ -132,7 +141,7 @@ def handle_calc_request(request):
 def order_box(request, box_id):
     user = request.user
     if user.is_anonymous:
-        return redirect(reverse('users:login'))
+        return redirect(reverse("users:login"))
 
     selected_box = Box.objects.get(id=box_id)
 
@@ -152,20 +161,24 @@ def order_box(request, box_id):
         form = OrderForm(request.POST)
         if form.is_valid():
             order = form.save(commit=False)
-            term = form.cleaned_data['term']
-            lease_start = form.cleaned_data['lease_start']
+            term = form.cleaned_data["term"]
+            lease_start = form.cleaned_data["lease_start"]
             order.customer = user
             order.box = selected_box
             order.price = order.box.price * term
             order.lease_start = lease_start
             order.lease_end = lease_start + relativedelta(months=term)
             order.save()
-            return render(request, 'orders/create_order.html', {'form': form, 'box': box_item, 'order': order})
+            return render(
+                request,
+                "orders/create_order.html",
+                {"form": form, "box": box_item, "order": order},
+            )
 
         form = ProlongationForm(request.POST)
         if form.is_valid():
             order = form.save(commit=False)
-            term = form.cleaned_data['term']
+            term = form.cleaned_data["term"]
             prolongation_start = previous_orders.first().lease_end
             order.customer = user
             order.box = selected_box
@@ -173,11 +186,23 @@ def order_box(request, box_id):
             order.lease_start = prolongation_start
             order.lease_end = prolongation_start + relativedelta(months=term)
             order.save()
-            return render(request, 'orders/create_order.html', {'form': form, 'box': box_item, 'order': order})
+            return render(
+                request,
+                "orders/create_order.html",
+                {"form": form, "box": box_item, "order": order},
+            )
     else:
         if previous_orders:
             form = ProlongationForm()
-            return render(request, 'orders/create_order.html', {'form': form, 'box': box_item, 'order': None})
+            return render(
+                request,
+                "orders/create_order.html",
+                {"form": form, "box": box_item, "order": None},
+            )
 
         form = OrderForm()
-        return render(request, 'orders/create_order.html', {'form': form, 'box': box_item, 'order': None})
+        return render(
+            request,
+            "orders/create_order.html",
+            {"form": form, "box": box_item, "order": None},
+        )

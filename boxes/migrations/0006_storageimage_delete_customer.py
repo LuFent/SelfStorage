@@ -7,23 +7,47 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('boxes', '0005_calcrequest'),
+        ("boxes", "0005_calcrequest"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='StorageImage',
+            name="StorageImage",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('image', models.ImageField(default=None, upload_to='', verbose_name='Изображение склада')),
-                ('number', models.IntegerField(default=0, verbose_name='Номер картинки')),
-                ('storage', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='imgs', to='boxes.storage', verbose_name='К какому складу относится')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "image",
+                    models.ImageField(
+                        default=None, upload_to="", verbose_name="Изображение склада"
+                    ),
+                ),
+                (
+                    "number",
+                    models.IntegerField(default=0, verbose_name="Номер картинки"),
+                ),
+                (
+                    "storage",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="imgs",
+                        to="boxes.storage",
+                        verbose_name="К какому складу относится",
+                    ),
+                ),
             ],
             options={
-                'ordering': ['number'],
+                "ordering": ["number"],
             },
         ),
         migrations.DeleteModel(
-            name='Customer',
+            name="Customer",
         ),
     ]

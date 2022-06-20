@@ -24,15 +24,13 @@ class CalcRequestForm(forms.ModelForm):
 
 class OrderForm(forms.ModelForm):
     lease_start = forms.DateField(
-        label='Начальная дата',
-        widget=SelectDateWidget(),
-        initial=date.today
+        label="Начальная дата", widget=SelectDateWidget(), initial=date.today
     )
     term = forms.IntegerField(label="Срок аренды, мес")
 
     class Meta:
         model = Order
-        fields = ('id', )
+        fields = ("id",)
 
 
 class ProlongationForm(forms.ModelForm):
@@ -40,4 +38,4 @@ class ProlongationForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        fields = ('id', )
+        fields = ("id",)

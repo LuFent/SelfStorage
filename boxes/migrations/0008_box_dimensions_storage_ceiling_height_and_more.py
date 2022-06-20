@@ -6,23 +6,25 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('boxes', '0007_alter_storage_options_storage_temperature'),
+        ("boxes", "0007_alter_storage_options_storage_temperature"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='box',
-            name='dimensions',
-            field=models.CharField(default='2 x 1 x 2.5', max_length=20, verbose_name='Параметры бокса'),
+            model_name="box",
+            name="dimensions",
+            field=models.CharField(
+                default="2 x 1 x 2.5", max_length=20, verbose_name="Параметры бокса"
+            ),
         ),
         migrations.AddField(
-            model_name='storage',
-            name='ceiling_height',
-            field=models.FloatField(default=3.5, verbose_name='Высота потолка'),
+            model_name="storage",
+            name="ceiling_height",
+            field=models.FloatField(default=3.5, verbose_name="Высота потолка"),
         ),
         migrations.AlterField(
-            model_name='storage',
-            name='contacts',
-            field=models.CharField(max_length=30, verbose_name='Контакты'),
+            model_name="storage",
+            name="contacts",
+            field=models.CharField(max_length=30, verbose_name="Контакты"),
         ),
     ]

@@ -8,31 +8,77 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Storage',
+            name="Storage",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('city', models.CharField(max_length=20, verbose_name='Город')),
-                ('address', models.CharField(max_length=255, verbose_name='Адрес доставки')),
-                ('max_box_count', models.PositiveIntegerField(verbose_name='Количество боксов на складе')),
-                ('feature', models.CharField(help_text='У каждого бокса своя фича, например: `Рядом метро`', max_length=20, verbose_name='Фича')),
-                ('contacts', models.CharField(max_length=30, verbose_name='Котнакты')),
-                ('description', models.CharField(max_length=50, verbose_name='Описание')),
-                ('route', models.CharField(max_length=50, verbose_name='Проезд')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("city", models.CharField(max_length=20, verbose_name="Город")),
+                (
+                    "address",
+                    models.CharField(max_length=255, verbose_name="Адрес доставки"),
+                ),
+                (
+                    "max_box_count",
+                    models.PositiveIntegerField(
+                        verbose_name="Количество боксов на складе"
+                    ),
+                ),
+                (
+                    "feature",
+                    models.CharField(
+                        help_text="У каждого бокса своя фича, например: `Рядом метро`",
+                        max_length=20,
+                        verbose_name="Фича",
+                    ),
+                ),
+                ("contacts", models.CharField(max_length=30, verbose_name="Котнакты")),
+                (
+                    "description",
+                    models.CharField(max_length=50, verbose_name="Описание"),
+                ),
+                ("route", models.CharField(max_length=50, verbose_name="Проезд")),
             ],
         ),
         migrations.CreateModel(
-            name='Box',
+            name="Box",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('floor', models.PositiveIntegerField(verbose_name='Этаж')),
-                ('number', models.CharField(max_length=7, verbose_name='Номер бокса')),
-                ('volume', models.PositiveIntegerField(max_length=25, verbose_name='Объем бокса м^2')),
-                ('storage', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='boxes', to='boxes.storage', verbose_name='Склад')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("floor", models.PositiveIntegerField(verbose_name="Этаж")),
+                ("number", models.CharField(max_length=7, verbose_name="Номер бокса")),
+                (
+                    "volume",
+                    models.PositiveIntegerField(
+                        max_length=25, verbose_name="Объем бокса м^2"
+                    ),
+                ),
+                (
+                    "storage",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="boxes",
+                        to="boxes.storage",
+                        verbose_name="Склад",
+                    ),
+                ),
             ],
         ),
     ]

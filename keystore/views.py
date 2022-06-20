@@ -15,7 +15,7 @@ def send_qr(request, order_id):
     order = Order.objects.get(id=order_id)
     box_key, _ = BoxKey.objects.get_or_create(
         order=order,
-        defaults={'code': randint(0, 99999)},
+        defaults={"code": randint(0, 99999)},
     )
     filename = f"{order_id}.png"
     img = qrcode.make(box_key.code)

@@ -62,9 +62,7 @@ def payment(request, order_id):
 
 def complete_payment(request, order_id):
     order = Order.objects.get(id=order_id)
-    order_payment = (
-        order.payments.order_by("-created_at").first()
-    )
+    order_payment = order.payments.order_by("-created_at").first()
 
     Configuration.account_id = settings.SHOP_ID
     Configuration.secret_key = settings.SHOP_TOKEN

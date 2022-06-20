@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('keystore', '0001_initial'),
+        ("keystore", "0001_initial"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='boxkey',
-            name='qr_code',
+            model_name="boxkey",
+            name="qr_code",
         ),
     ]

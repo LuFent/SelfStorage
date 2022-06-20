@@ -11,7 +11,11 @@ from .models import Box, Storage, Order
 def index(request):
     Storage.objects.fetch_with_coords()
     nearest_storage_id = get_nearest_storage(request)
+    if not nearest_storage_id:
+        nearest_storage_id = Storage.objects.order_by('?').first().id
+
     nearest_storage = Storage.objects.filter(id=nearest_storage_id)
+
     nearest_storage = nearest_storage.fetch_with_min_price()
     nearest_storage = nearest_storage.fetch_with_boxes_available_count()
     nearest_storage_item = storage_serialize(nearest_storage.first())

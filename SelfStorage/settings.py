@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "payment.apps.PaymentConfig",
     "keystore.apps.KeystoreConfig",
     "adminsortable2",
+    "pages",
 ]
 
 MIDDLEWARE = [

@@ -135,8 +135,6 @@ def order_box(request, box_id):
         return redirect(reverse('users:login'))
 
     selected_box = Box.objects.get(id=box_id)
-    # if selected_box.is_occupied:
-    #     return HttpResponse("Коробка уже занята")
 
     box_item = {
         "number": selected_box.number,
@@ -146,6 +144,9 @@ def order_box(request, box_id):
     }
 
     previous_orders = user.orders.filter(box=selected_box, payments__is_paid=True)
+
+    if selected_box.is_occupied and not previous_orders:
+        return HttpResponse("Коробка уже занята")
 
     if request.method == "POST":
         form = OrderForm(request.POST)

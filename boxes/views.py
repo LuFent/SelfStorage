@@ -56,7 +56,7 @@ def boxes(request, storage_id):
         return redirect("boxes:storages")
 
     boxes = selected_storage.boxes.prefetch_related('orders').is_occupied_update()
-    storage_boxes = [box_serialize(box) for box in boxes]
+    storage_boxes = [box_serialize(box) for box in boxes.filter(is_occupied=False)]
     boxes_to_3 = []
     boxes_to_10 = []
     boxes_from_10 = []

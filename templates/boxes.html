@@ -41,9 +41,9 @@
 
       {% for storage in storages %}
       document.getElementById('pills-{{ storage.id }}-tab').addEventListener('click', function redirectFunction() {
-        var url = "{% url 'boxes:boxes' storage.id %}";
-        console.log(url);
-          location.assign(url);
+        var url = "{% url 'boxes:boxes' storage.id %}#pills-tab";
+
+        location.assign(url);
        })
 
       {% endfor %}
@@ -186,22 +186,6 @@
 
         {% for box in storage_boxes.boxes_all %}
 
-          {% if box.is_occupied %}
-          <a class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink__deactivated" >
-            <div class="col-12 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
-                <span class="SelfStorage_green fs_24 me-2">{{ box.floor }} эт.</span><span class="fs_24">№ {{box.number}} </span>
-              </div>
-              <div class="col-6 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
-                <span class="fs_24"> {{box.volume}}  м²</span>
-              </div>
-              <div class="col-6 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
-                <span class="fs_24">{{ box.dimensions }} м²</span>
-              </div>
-              <div class="col-12 col-lg-3">
-                <span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">От {{ box.price }} ₽</span>
-            </div>
-          </a>
-          {% else %}
           <a href="{% url 'boxes:order-box' box.id %}" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink" >          
             <div class="col-12 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
                 <span class="SelfStorage_green fs_24 me-2">{{ box.floor }} эт.</span><span class="fs_24">№ {{box.number}} </span>
@@ -216,7 +200,7 @@
                 <span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">От {{ box.price }} ₽</span>
             </div>
           </a>
-          {% endif %}
+
 
         {% endfor %}
 
@@ -230,22 +214,7 @@
 
                {% for box in storage_boxes.to_3 %}
 
-                    {% if box.is_occupied %}
-                          <a class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink__deactivated" >
-                            <div class="col-12 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
-                                <span class="SelfStorage_green fs_24 me-2">{{ box.floor }} эт.</span><span class="fs_24">№ {{box.number}} </span>
-                              </div>
-                              <div class="col-6 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
-                                <span class="fs_24"> {{box.volume}}  м²</span>
-                              </div>
-                              <div class="col-6 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
-                                <span class="fs_24">{{ box.dimensions }} м²</span>
-                              </div>
-                              <div class="col-12 col-lg-3">
-                                <span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">От {{ box.price }} ₽</span>
-                            </div>
-                          </a>
-                    {% else %}
+
                           <a href="{% url 'boxes:order-box' box.id %}" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink" >          
                             <div class="col-12 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
                                 <span class="SelfStorage_green fs_24 me-2">{{ box.floor }} эт.</span><span class="fs_24">№ {{box.number}} </span>
@@ -260,7 +229,7 @@
                                 <span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">От {{ box.price }} ₽</span>
                             </div>
                           </a>
-                    {% endif %}
+
 
             {% endfor %}
 
@@ -272,22 +241,6 @@
 
       {% for box in storage_boxes.to_10 %}
 
-                    {% if box.is_occupied %}
-                        <a class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink__deactivated" >
-                          <div class="col-12 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
-                              <span class="SelfStorage_green fs_24 me-2">{{ box.floor }} эт.</span><span class="fs_24">№ {{box.number}} </span>
-                            </div>
-                            <div class="col-6 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
-                              <span class="fs_24"> {{box.volume}}  м²</span>
-                            </div>
-                            <div class="col-6 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
-                              <span class="fs_24">{{ box.dimensions }} м²</span>
-                            </div>
-                            <div class="col-12 col-lg-3">
-                              <span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">От {{ box.price }} ₽</span>
-                          </div>
-                        </a>
-                    {% else %}
                         <a href="{% url 'boxes:order-box' box.id %}" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink" >          
                           <div class="col-12 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
                               <span class="SelfStorage_green fs_24 me-2">{{ box.floor }} эт.</span><span class="fs_24">№ {{box.number}} </span>
@@ -302,7 +255,7 @@
                               <span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">От {{ box.price }} ₽</span>
                           </div>
                         </a>
-                    {% endif %}
+
 
               {% endfor %}
        
@@ -314,22 +267,6 @@
 
             {% for box in storage_boxes.from_10 %}
 
-                    {% if box.is_occupied %}
-                        <a class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink__deactivated" >
-                          <div class="col-12 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
-                              <span class="SelfStorage_green fs_24 me-2">{{ box.floor }} эт.</span><span class="fs_24">№ {{box.number}} </span>
-                            </div>
-                            <div class="col-6 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
-                              <span class="fs_24"> {{box.volume}}  м²</span>
-                            </div>
-                            <div class="col-6 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
-                              <span class="fs_24">{{ box.dimensions }} м²</span>
-                            </div>
-                            <div class="col-12 col-lg-3">
-                              <span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">От {{ box.price }} ₽</span>
-                          </div>
-                        </a>
-                    {% else %}
                         <a href="{% url 'boxes:order-box' box.id %}" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink" >          
                           <div class="col-12 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
                               <span class="SelfStorage_green fs_24 me-2">{{ box.floor }} эт.</span><span class="fs_24">№ {{box.number}} </span>
@@ -344,7 +281,6 @@
                               <span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">От {{ box.price }} ₽</span>
                           </div>
                         </a>
-                    {% endif %}
 
               {% endfor %}
     

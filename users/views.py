@@ -53,7 +53,7 @@ def login_user(request):
 @login_required(login_url="users:login")
 def account(request):
     user = request.user
-
+    paid_orders = user.orders.filter(payments__is_paid=True)
     if request.method == "POST":
         form = AccountForm(request.POST)
         if form.is_valid():
@@ -65,5 +65,5 @@ def account(request):
     else:
         form = AccountForm()
 
-    context = {"user": user, "form": form}
+    context = {"user": user, "paid_orders": paid_orders, "form": form}
     return render(request, "account.html", context)

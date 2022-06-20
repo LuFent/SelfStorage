@@ -99,13 +99,13 @@
           <!-- <a href="#" class="SelfStorage_orange">История аренды</a>
           <h4 class="SelfStorage_grey my-3">Срок Вашей аренды подходит к концу :(<br>Вы можете продлить аренду или
             забрать вещи до 28 июня 2022 года включительно.</h4> -->
-          {% if not user.orders.all %}
+          {% if not paid_orders %}
           <span>
             Вы пока не арендовали ни одного склада.
             <a href="{% url 'boxes:storages' %}" class="SelfStorage_orange">Арендовать.</a>
           </span>
           {% else %}
-          {% for order in user.orders.all %}
+          {% for order in paid_orders %}
           <div class="mb-5">
             <h4 class="SelfStorage_green">Мой склад № {{ forloop.counter }}</h4>
             <h4>{{ order.box.storage.city }}, {{ order.box.storage.address }}</h4>

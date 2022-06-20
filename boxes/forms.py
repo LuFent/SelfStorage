@@ -33,3 +33,11 @@ class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
         fields = ('id', )
+
+
+class ProlongationForm(forms.ModelForm):
+    term = forms.IntegerField(label="Продлить на срок, мес")
+
+    class Meta:
+        model = Order
+        fields = ('id', )

@@ -9,17 +9,33 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('boxes', '0005_calcrequest'),
+        ("boxes", "0005_calcrequest"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='BoxKey',
+            name="BoxKey",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('code', models.IntegerField(verbose_name='Код')),
-                ('qr_code', models.ImageField(upload_to='', verbose_name='QR-код')),
-                ('order', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='order', to='boxes.order', verbose_name='Заказ к оплате')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("code", models.IntegerField(verbose_name="Код")),
+                ("qr_code", models.ImageField(upload_to="", verbose_name="QR-код")),
+                (
+                    "order",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="order",
+                        to="boxes.order",
+                        verbose_name="Заказ к оплате",
+                    ),
+                ),
             ],
         ),
     ]

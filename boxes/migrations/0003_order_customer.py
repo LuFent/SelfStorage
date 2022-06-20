@@ -9,25 +9,57 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('boxes', '0002_box_price_alter_box_volume_alter_storage_address'),
+        ("boxes", "0002_box_price_alter_box_volume_alter_storage_address"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Order',
+            name="Order",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('price', models.PositiveIntegerField(verbose_name='Цена заказа')),
-                ('lease_start', models.DateField(verbose_name='День начала аренды')),
-                ('lease_end', models.DateField(verbose_name='День конца аренды')),
-                ('box', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='orders', to='boxes.box', verbose_name='Бокс')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("price", models.PositiveIntegerField(verbose_name="Цена заказа")),
+                ("lease_start", models.DateField(verbose_name="День начала аренды")),
+                ("lease_end", models.DateField(verbose_name="День конца аренды")),
+                (
+                    "box",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="orders",
+                        to="boxes.box",
+                        verbose_name="Бокс",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Customer',
+            name="Customer",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='customer', to=settings.AUTH_USER_MODEL, verbose_name='Модель Юзера')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="customer",
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="Модель Юзера",
+                    ),
+                ),
             ],
         ),
     ]

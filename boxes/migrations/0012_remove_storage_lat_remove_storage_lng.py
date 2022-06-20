@@ -6,16 +6,16 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('boxes', '0011_alter_storage_lat_alter_storage_lng'),
+        ("boxes", "0011_alter_storage_lat_alter_storage_lng"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='storage',
-            name='lat',
+            model_name="storage",
+            name="lat",
         ),
         migrations.RemoveField(
-            model_name='storage',
-            name='lng',
+            model_name="storage",
+            name="lng",
         ),
     ]

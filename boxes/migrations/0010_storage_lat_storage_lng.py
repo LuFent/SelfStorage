@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('boxes', '0009_order_customer'),
+        ("boxes", "0009_order_customer"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='storage',
-            name='lat',
-            field=models.FloatField(null=True, verbose_name='Широта'),
+            model_name="storage",
+            name="lat",
+            field=models.FloatField(null=True, verbose_name="Широта"),
         ),
         migrations.AddField(
-            model_name='storage',
-            name='lng',
-            field=models.FloatField(null=True, verbose_name='Долгота'),
+            model_name="storage",
+            name="lng",
+            field=models.FloatField(null=True, verbose_name="Долгота"),
         ),
     ]

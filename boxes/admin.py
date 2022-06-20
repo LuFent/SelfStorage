@@ -31,10 +31,9 @@ class PaymentInline(admin.StackedInline):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     inlines = [PaymentInline]
-    list_display = ('id', 'box', 'lease_start', 'lease_end',
-                    'customer', 'get_payment')
+    list_display = ("id", "box", "lease_start", "lease_end", "customer", "get_payment")
 
-    @admin.display(ordering='payments__status', description='Payment')
+    @admin.display(ordering="payments__status", description="Payment")
     def get_payment(self, obj):
         if obj.payments.first():
             return obj.payments.first().status

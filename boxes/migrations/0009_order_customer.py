@@ -9,14 +9,20 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('boxes', '0008_box_dimensions_storage_ceiling_height_and_more'),
+        ("boxes", "0008_box_dimensions_storage_ceiling_height_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='order',
-            name='customer',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, related_name='orders', to=settings.AUTH_USER_MODEL, verbose_name='Заказчик'),
+            model_name="order",
+            name="customer",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="orders",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Заказчик",
+            ),
             preserve_default=False,
         ),
     ]

@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('boxes', '0003_order_customer'),
+        ("boxes", "0003_order_customer"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='box',
-            name='is_occupied',
-            field=models.BooleanField(default=False, verbose_name='Занят или нет'),
+            model_name="box",
+            name="is_occupied",
+            field=models.BooleanField(default=False, verbose_name="Занят или нет"),
         ),
     ]

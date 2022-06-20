@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('boxes', '0010_storage_lat_storage_lng'),
+        ("boxes", "0010_storage_lat_storage_lng"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='storage',
-            name='lat',
-            field=models.FloatField(blank=True, null=True, verbose_name='Широта'),
+            model_name="storage",
+            name="lat",
+            field=models.FloatField(blank=True, null=True, verbose_name="Широта"),
         ),
         migrations.AlterField(
-            model_name='storage',
-            name='lng',
-            field=models.FloatField(blank=True, null=True, verbose_name='Долгота'),
+            model_name="storage",
+            name="lng",
+            field=models.FloatField(blank=True, null=True, verbose_name="Долгота"),
         ),
     ]

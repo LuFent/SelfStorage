@@ -6,17 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('boxes', '0006_storageimage_delete_customer'),
+        ("boxes", "0006_storageimage_delete_customer"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='storage',
-            options={'ordering': ['id']},
+            name="storage",
+            options={"ordering": ["id"]},
         ),
         migrations.AddField(
-            model_name='storage',
-            name='temperature',
-            field=models.IntegerField(default=15, verbose_name='Температура на складе'),
+            model_name="storage",
+            name="temperature",
+            field=models.IntegerField(default=15, verbose_name="Температура на складе"),
         ),
     ]

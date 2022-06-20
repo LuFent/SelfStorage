@@ -9,16 +9,16 @@ def get_coords_by_ip(ip):
     resp = requests.get(url)
     resp.raise_for_status()
     location = resp.json()
-    lat, lng = location['latitude'], location['longitude']
+    lat, lng = location["latitude"], location["longitude"]
     return lat, lng
 
 
 def get_nearest_storage(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
     if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
+        ip = x_forwarded_for.split(",")[0]
     else:
-        ip = request.META.get('REMOTE_ADDR')
+        ip = request.META.get("REMOTE_ADDR")
 
     try:
         user_cords = get_coords_by_ip(ip)
@@ -42,4 +42,3 @@ def get_nearest_storage(request):
         return nearest_storage.id
     else:
         return None
-

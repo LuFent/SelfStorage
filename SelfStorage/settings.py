@@ -21,6 +21,8 @@ env.read_env()
 
 SHOP_ID = env("YOOKASSA_SHOP_ID")
 SHOP_TOKEN = env("YOOKASSA_SHOP_TOKEN")
+YANDEX_API_KEY = env("YANDEX_API_KEY")
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -50,9 +52,11 @@ INSTALLED_APPS = [
     "phonenumber_field",
     "boxes",
     "users",
+    "coords",
     "payment.apps.PaymentConfig",
     "keystore.apps.KeystoreConfig",
     "adminsortable2",
+    "pages",
 ]
 
 MIDDLEWARE = [

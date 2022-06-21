@@ -25,4 +25,5 @@ urlpatterns = [
     path("users/", include("users.urls", namespace="users")),
     path("payment/", include("payment.urls", namespace="payment")),
     path("keystore/", include("keystore.urls", namespace="keystore")),
+    path("pages/", include("pages.urls", namespace="pages")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

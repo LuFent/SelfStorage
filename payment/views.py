@@ -72,4 +72,5 @@ def complete_payment(request, order_id):
     order_payment.is_paid = payment.paid
     order_payment.save()
     order.box.is_occupied = True
+    order.box.save()
     return redirect(reverse("users:account"))
